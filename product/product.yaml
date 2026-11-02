@@ -1,0 +1,11 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Count the other PubMed papers by a paper's coauthors."
+summary: "PubMed Coauthor Paper Count takes a paper's PMID and author list and asks NCBI E-utilities how many other PubMed records match at least one of those names. The source paper is left out of the count."
+highlights:
+  - "Takes a PMID and the author list of that paper."
+  - "Counts distinct PubMed records across the coauthor names."
+  - "Excludes the source paper, and raises when that paper is not in the search."
+steps:
+  - "Give the source PMID and up to 20 author names."
+  - "The plugin searches PubMed for the union of those names."
+  - "It subtracts the source paper and returns how many other records remain."
