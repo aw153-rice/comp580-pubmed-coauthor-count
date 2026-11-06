@@ -8,7 +8,7 @@ import time
 
 import httpx
 
-ESEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+ESUMMARY_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
 TOOL_NAME = "pubmed-coauthor-paper-count"
 
 _client = None

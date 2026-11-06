@@ -1,4 +1,4 @@
-"""Checks for count_coauthor_papers and the pubmed-coauthor-paper-count task."""
+"""Checks for count_paper_coauthors and the pubmed-coauthor-paper-count task."""
 
 from .checks import result
 from .names import input_problem, output_problem
@@ -19,7 +19,7 @@ def verify_output(input_value, output_value, workspace):
     kind, payload = load_record(workspace, input_value)
     if kind != "ok":
         return result(False, payload)
-    if output_value.other_papers != payload["other_papers"]:
+    if output_value.coauthor_count != payload["coauthor_count"]:
         return result(False, "output is not the count in coauthors.json")
     return result(True, "output matches the recorded count")
 
@@ -33,12 +33,12 @@ def verify_task(arguments, output, reference, workspace):
         problem = output_problem(reference)
         if problem:
             return result(False, problem[1])
-        if output.other_papers != reference.other_papers:
+        if output.coauthor_count != reference.coauthor_count:
             return result(False, "output does not match the reference")
     kind, payload = load_record(workspace, arguments)
     if kind != "ok":
         return result(False, payload)
-    if output.other_papers != payload["other_papers"]:
+    if output.coauthor_count != payload["coauthor_count"]:
         return result(False, "coauthors.json does not support the output")
     if reference is None:
         return result(True, "output matches the recorded count")

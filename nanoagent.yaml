@@ -1,7 +1,7 @@
 _ > nanoagent.plugin.v0001.ManifestConfig:
 id: pubmed-coauthor-paper-count
 name: PubMed Coauthor Paper Count
-version: 0.1.2
+version: 0.1.3
 status: ready
 spec: nanoagent.plugin/v0001
 
@@ -17,16 +17,16 @@ permissions > nanoagent.plugin.v0001.PermissionsConfig:
 
 # One entry per contract.Tool; its input and output classes are contract.TOOLS's.
 tools > dict[contract.Tool, nanoagent.plugin.v0001.ToolConfig]:
-  count_coauthor_papers:
-    description: Count the other PubMed papers that match at least one author on the source paper.
-  pin_coauthor_count:
-    description: Pin that same other-paper count before the task runs, as the answer key.
+  count_paper_coauthors:
+    description: Count the personal authors PubMed lists on one paper.
+  pin_paper_coauthors:
+    description: Pin that same coauthor count before the task runs, as the answer key.
 
 # One entry per contract.Task; its input class is contract.TASKS's.
 tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
   pubmed-coauthor-paper-count:
-    description: Return how many other PubMed papers the coauthors of one paper have.
+    description: Return how many coauthors one PubMed paper has.
     runner: tool
-    tools: [count_coauthor_papers]
-    reference: pin_coauthor_count
-    instructions: Call count_coauthor_papers once with the PMID and the author list, and return that tool's other_papers unchanged.
+    tools: [count_paper_coauthors]
+    reference: pin_paper_coauthors
+    instructions: Call count_paper_coauthors once with the PMID, and return that tool's coauthor_count unchanged.

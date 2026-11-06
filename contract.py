@@ -8,8 +8,8 @@ from slimconfig import Output
 
 
 class Tool(Enum):
-    COUNT_COAUTHOR_PAPERS = "count_coauthor_papers"
-    PIN_COAUTHOR_COUNT = "pin_coauthor_count"
+    COUNT_PAPER_COAUTHORS = "count_paper_coauthors"
+    PIN_PAPER_COAUTHORS = "pin_paper_coauthors"
 
 
 class Task(Enum):
@@ -18,17 +18,16 @@ class Task(Enum):
 
 @dataclass
 class CoauthorCountInput(Output):
-    pmid: Annotated[str, "PMID of the source paper, excluded from the other-paper count"]
-    authors: Annotated[list[str], "Author list of that paper, in byline order, at most 20 names"]
+    pmid: Annotated[str, "PMID of the paper whose coauthors are counted"]
 
 
 @dataclass
 class CoauthorCountOutput(Output):
-    other_papers: Annotated[int, "Distinct PubMed records matching at least one author, excluding the source PMID"]
+    coauthor_count: Annotated[int, "Number of personal authors PubMed lists on that paper, including the first"]
 
 
 TOOLS = {
-    Tool.COUNT_COAUTHOR_PAPERS: (CoauthorCountInput, CoauthorCountOutput),
-    Tool.PIN_COAUTHOR_COUNT: (CoauthorCountInput, CoauthorCountOutput),
+    Tool.COUNT_PAPER_COAUTHORS: (CoauthorCountInput, CoauthorCountOutput),
+    Tool.PIN_PAPER_COAUTHORS: (CoauthorCountInput, CoauthorCountOutput),
 }
 TASKS = {Task.PUBMED_COAUTHOR_PAPER_COUNT: (CoauthorCountInput, CoauthorCountOutput)}

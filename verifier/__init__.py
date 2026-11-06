@@ -5,8 +5,8 @@ from contract import Task, Tool
 from . import papers, pin
 
 TOOLS = {
-    Tool.COUNT_COAUTHOR_PAPERS: papers,
-    Tool.PIN_COAUTHOR_COUNT: pin,
+    Tool.COUNT_PAPER_COAUTHORS: papers,
+    Tool.PIN_PAPER_COAUTHORS: pin,
 }
 TASKS = {Task.PUBMED_COAUTHOR_PAPER_COUNT: papers.verify_task}
 

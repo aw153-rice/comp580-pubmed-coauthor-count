@@ -1,4 +1,4 @@
-"""Checks for pin_coauthor_count. The pin writes no file; the task compares it as the answer key."""
+"""Checks for pin_paper_coauthors. The pin writes no file; the task compares it as the answer key."""
 
 from .checks import result
 from .names import input_problem, output_problem

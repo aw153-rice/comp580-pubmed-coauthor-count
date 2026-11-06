@@ -13,15 +13,15 @@ from mcp.server.stdio import stdio_server
 from slimconfig import build_output, output_schema, plain_output
 
 from contract import TOOLS, Tool
-from plugin import count_coauthor_papers, pin_coauthor_count
+from plugin import count_paper_coauthors, pin_paper_coauthors
 
 server = Server("pubmed-coauthor-paper-count")
 # NanoAgent names the one folder this plugin may write to.
 WORKSPACE_ENV = "NANOAGENT_WORKSPACE"
 # Each tool's implementation: (its input, the workspace) -> its output, as contract.TOOLS types them.
 IMPLEMENTATIONS = {
-    Tool.COUNT_COAUTHOR_PAPERS: count_coauthor_papers,
-    Tool.PIN_COAUTHOR_COUNT: pin_coauthor_count,
+    Tool.COUNT_PAPER_COAUTHORS: count_paper_coauthors,
+    Tool.PIN_PAPER_COAUTHORS: pin_paper_coauthors,
 }
 
 

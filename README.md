@@ -4,25 +4,24 @@ A `nanoagent.plugin/v0001` plugin, created by `nanoagent plugin new` with the
 structure of NanoAgent's reference plugin,
 [arxiv-source](https://github.com/zeyuyang8/arxiv-source).
 
-Given one paper's PMID and author list, it counts the other PubMed records
-that match at least one of those coauthors.
+Given one paper's PMID, it counts the personal authors PubMed lists on that paper.
 
 ## Tools
 
 | Tool | Does | Code |
 |---|---|---|
-| `count_coauthor_papers` | Counts distinct PubMed records for the author list, excluding the source PMID | `src/plugin/papers.py` |
-| `pin_coauthor_count` | Computes the same count as the task's answer key, and writes no file | `src/plugin/pin.py` |
+| `count_paper_coauthors` | Counts personal authors on one PMID | `src/plugin/papers.py` |
+| `pin_paper_coauthors` | Computes the same count as the task's answer key, and writes no file | `src/plugin/pin.py` |
 
-`count_coauthor_papers` writes `coauthors.json` in the workspace: the PMID, the normalized author list, the union term, the union count, one source hit, and `other_papers`. Each name is a quoted `[Author]` term. Repeated names are searched once. The source PMID is excluded only when a second search shows it is one hit of that union. At most 20 names are accepted.
+`count_paper_coauthors` writes `coauthors.json` in the workspace: the PMID, the byline, and `coauthor_count`. Each byline row is a name and an `authtype`. `Author` rows count, in order, including the first author. `CollectiveName` rows stay in the byline and do not count. A repeated personal name counts once per row. The file is written only after the summary parses and at least one personal author remains.
 
 ### Tasks
 
 | Task | Does | Runner |
 |---|---|---|
-| `pubmed-coauthor-paper-count` | Returns how many other PubMed papers those coauthors have | `tool`, with `count_coauthor_papers` and reference `pin_coauthor_count` |
+| `pubmed-coauthor-paper-count` | Returns how many coauthors that paper has | `tool`, with `count_paper_coauthors` and reference `pin_paper_coauthors` |
 
-The input is `pmid` and `authors`. The output is `other_papers`, the union count minus one.
+The input is `pmid`. The output is `coauthor_count`, the number of personal authors on that paper.
 
 ## Layout
 
@@ -59,5 +58,5 @@ uv run pytest
 The tests use a fake HTTP client and do not call NCBI. A live run needs
 network access to `eutils.ncbi.nlm.nih.gov`. `.env` declares no variables. The client adds `NCBI_API_KEY` and `NCBI_EMAIL`
 to the E-utilities request only when the process already has them, and still
-counts papers when they are absent. No workspace
-file is required before a run; `count_coauthor_papers` creates `coauthors.json`.
+counts coauthors when they are absent. No workspace
+file is required before a run; `count_paper_coauthors` creates `coauthors.json`.

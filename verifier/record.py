@@ -1,9 +1,9 @@
-"""Read coauthors.json. The other-paper count is checked against this record."""
+"""Read coauthors.json. The coauthor count is checked against this record."""
 
 import json
 from pathlib import Path
 
-from .names import union_term, unique_authors
+from .names import byline_problem, personal_names
 
 FILE_NAME = "coauthors.json"
 
@@ -19,22 +19,14 @@ def load_record(workspace, given):
         return ("malformed", "coauthors.json is not JSON")
     if type(data) is not dict:
         return ("malformed", "coauthors.json is not an object")
-    authors = unique_authors(given.authors)
     if data.get("pmid") != given.pmid:
         return ("malformed", "coauthors.json pmid does not match the input")
-    if data.get("authors") != authors:
-        return ("malformed", "coauthors.json authors do not match the input")
-    if data.get("term") != union_term(authors):
-        return ("malformed", "coauthors.json term does not match the author list")
-    union_count = data.get("union_count")
-    source_hits = data.get("source_hits")
-    other = data.get("other_papers")
-    if type(union_count) is not int or union_count < 1:
-        return ("malformed", "coauthors.json union_count must be at least 1")
-    if type(source_hits) is not int or source_hits != 1:
-        return ("malformed", "coauthors.json source_hits must be 1")
-    if type(other) is not int or other < 0:
-        return ("malformed", "coauthors.json other_papers must be zero or greater")
-    if other != union_count - 1:
-        return ("malformed", "coauthors.json other_papers is not union_count minus 1")
+    problem = byline_problem(data.get("byline"))
+    if problem:
+        return problem
+    count = data.get("coauthor_count")
+    if type(count) is not int or count < 1:
+        return ("malformed", "coauthors.json coauthor_count must be at least 1")
+    if count != len(personal_names(data["byline"])):
+        return ("malformed", "coauthors.json coauthor_count is not the number of personal authors")
     return ("ok", data)

@@ -1,4 +1,4 @@
-from plugin.papers import count_coauthor_papers
-from plugin.pin import pin_coauthor_count
+from plugin.papers import count_paper_coauthors
+from plugin.pin import pin_paper_coauthors
 
-__all__ = ["count_coauthor_papers", "pin_coauthor_count"]
+__all__ = ["count_paper_coauthors", "pin_paper_coauthors"]
