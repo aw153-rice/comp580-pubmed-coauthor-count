@@ -192,14 +192,20 @@ def test_verify_task_accepts_the_reference(tmp_path: Path):
     assert verdict["score"] == 1.0
 
 
-def test_verify_task_rejects_a_wrong_count_and_a_missing_reference(tmp_path: Path):
+def test_verify_task_rejects_a_wrong_count(tmp_path: Path):
     write_record(tmp_path, record())
     wrong = verifier.verify_task("pubmed-coauthor-paper-count", given(), made(5), made(4), str(tmp_path))
     assert wrong["valid"] is False
     assert "reference" in wrong["message"]
-    missing = verifier.verify_task("pubmed-coauthor-paper-count", given(), made(4), None, str(tmp_path))
-    assert missing["valid"] is False
-    assert "missing" in missing["message"]
+
+
+def test_verify_task_accepts_the_workspace_when_the_reference_is_absent(tmp_path: Path):
+    write_record(tmp_path, record())
+    verdict = verifier.verify_task("pubmed-coauthor-paper-count", given(), made(4), None, str(tmp_path))
+    assert verdict["valid"] is True
+    absent = verifier.verify_task("pubmed-coauthor-paper-count", given(), made(4), None, str(tmp_path / "empty"))
+    assert absent["valid"] is False
+    assert "missing" in absent["message"]
 
 
 def test_verify_task_rejects_a_file_that_does_not_support_the_reference(tmp_path: Path):
